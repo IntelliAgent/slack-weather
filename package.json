@@ -4,12 +4,15 @@
   "description": "Weather",
   "main": "server.js",
   "scripts": {
-    "test": "test",
+    "postinstall": "npm install",
+    "prestart": "tsc",
     "start": "node server.js"
   },
   "dependencies": {
     "express": "~4.13.0",
-    "request": "~2.67.0"
+    "http": "0.0.0",
+    "request": "~2.67.0",
+    "typescript": "^1.8.9"
   },
   "keywords": [
     "weather",
