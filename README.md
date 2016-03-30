@@ -3,5 +3,5 @@ Weather Slack App
 
 Installing
 ```
-npm install
+npm start
 ```
