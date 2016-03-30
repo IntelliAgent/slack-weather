@@ -19,6 +19,10 @@
     "weather",
     "slack"
   ],
+  "engines": {
+    "node": "4.4.x",
+    "npm": "2.14.x"
+  },
   "author": "",
   "license": "MIT"
 }
