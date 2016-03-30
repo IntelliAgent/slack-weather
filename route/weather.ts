@@ -4,7 +4,7 @@ import {SlackToken} from "../config/config";
 let weather = new Weather();
 
 export function getCurrentWeather(req, res) {
-    if (req.token !== SlackToken) {
+    if (req.query.token !== SlackToken) {
         weather.getCurrentWeather({
             q: req.query.q || '',
             id: req.query.id || '',
