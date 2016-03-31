@@ -42,7 +42,7 @@ export class Weather {
                             attachments: [
                                 {
                                     pretext: `It\'s ${temp}C with ${humidity}% humidity and ${windSpeed}meter/sec winds in ${city}`,
-                                    image_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"
+                                    thumb_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"
                                 }
                             ]
                         });
