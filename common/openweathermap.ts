@@ -36,11 +36,14 @@ export class Weather {
                         var temp = body.main.temp;
                         var humidity = body.main.humidity;
                         var windSpeed = body.wind.speed;
+                        var city = body.name;
                         res.status(200).send({
                             response_type: 'in_channel',
-                            text: `It\'s ${temp}C with ${humidity}% humidity and ${windSpeed}meter/sec winds`,
                             attachments: [
-                                {image_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"}
+                                {
+                                    text: `It\'s ${temp}C with ${humidity}% humidity and ${windSpeed}meter/sec winds in ${city}`,
+                                    thumb_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"
+                                }
                             ]
                         });
                     }
