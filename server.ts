@@ -6,7 +6,7 @@ import http = require('http');
 
 let app = express();
 
-app.get('/slack/weather', weather.getWeather);
+app.post('/slack/weather', weather.getWeather);
 
 app.set('port', process.env.PORT || 8080);
 

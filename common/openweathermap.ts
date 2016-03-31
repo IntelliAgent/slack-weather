@@ -25,6 +25,7 @@ export class Weather {
             },
             function (error, response, body) {
                 if (!error && response.statusCode === 200) {
+                    console.log(body);
                     res.status(200).send(body);
                 } else {
                     console.error(error, body);
