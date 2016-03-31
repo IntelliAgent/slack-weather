@@ -14,6 +14,10 @@ export class Weather {
         this.queryOpenWeatherAPI(currentWeatherEndpoint + qs.stringify(params), res);
     }
 
+    public getFiveDaysForecast(params, res) {
+        this.queryOpenWeatherAPI(forecastEndpoint + qs.stringify(params), res);
+    }
+
     private queryOpenWeatherAPI(url, res) {
         request({
                 uri: url + '&appid=' + weatherKey.WeatherKEY,
