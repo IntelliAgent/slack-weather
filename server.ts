@@ -3,8 +3,12 @@
 import weather = require('./route/weather');
 import express = require('express');
 import http = require('http');
+import bodyParser = require('body-parser');
 
 let app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.post('/slack/weather', weather.getWeather);
 

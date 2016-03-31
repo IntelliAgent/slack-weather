@@ -25,6 +25,9 @@
     },
     "request/request.d.ts": {
       "commit": "bf4ecf5b68887ed5a065e3922885c34d0f5739df"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "bf4ecf5b68887ed5a065e3922885c34d0f5739df"
     }
   }
 }

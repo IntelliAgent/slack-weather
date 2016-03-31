@@ -4,10 +4,9 @@ import {SlackToken} from "../config/config";
 let weather = new Weather();
 
 export function getWeather(req, res) {
-    if (req.query.token === SlackToken) {
-        if (req.query.text) {
-            let queryText = req.query.text.split(/\S+/g);
-            console.log(queryText);
+    if (req.body.token === SlackToken) {
+        if (req.body.text) {
+            let queryText = req.body.text.split(/\s+/g);
             let nbParams = queryText.length;
             if (queryText[0] === 'delete') {
                 // Delete alias
