@@ -41,8 +41,8 @@ export class Weather {
                             response_type: 'in_channel',
                             attachments: [
                                 {
-                                    text: `It\'s ${temp}C with ${humidity}% humidity and ${windSpeed}meter/sec winds in ${city}`,
-                                    thumb_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"
+                                    pretext: `It\'s ${temp}C with ${humidity}% humidity and ${windSpeed}meter/sec winds in ${city}`,
+                                    image_url: "http://openweathermap.org/img/w/" + body.weather[0].icon + ".png"
                                 }
                             ]
                         });
