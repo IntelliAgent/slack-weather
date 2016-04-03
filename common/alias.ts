@@ -49,10 +49,10 @@ export class Alias{
             }
         });
         
-        fs.readFile(this.file, (data, err) => {
+        fs.readFile(this.file, (err, data) => {
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
-            }    
+            }
             this.aliases = JSON.parse(data);
         }); 
     }
