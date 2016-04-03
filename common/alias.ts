@@ -43,17 +43,25 @@ export class Alias{
     }
     
     private loadAliases(res){
-        this.file = fs.open(filePath, 'w+', (err, fd) => {
+        fs.open(filePath, 'w+', (err, fd) => {
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to open file');
             }
+            fs.close(fd, (err) => { 
+                this.ephemeralResponse(res, 'Error', 'Was unable to close file');
+            });
         });
         
-        fs.readFile(this.file, (err, data) => {
+        fs.readFile(filePath, (err, data) => {
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
             } else{
-                this.aliases = JSON.parse(data.toString());
+                let stringifiefBuffer = data.toString();
+                if(stringifiefBuffer === ''){
+                    this.aliases = {};
+                }else{
+                    this.aliases = JSON.parse(stringifiefBuffer);
+                }
             }
         }); 
     }
@@ -63,10 +71,6 @@ export class Alias{
             if(err) {
                 this.ephemeralResponse(res, 'Error', 'Was unable to save alias file');
             }
-        });
-        
-        fs.close(this.file, (err) => {
-            this.ephemeralResponse(res, 'Error', 'Was unable to close alias file');
         });
     }
     
