@@ -52,8 +52,9 @@ export class Alias{
         fs.readFile(this.file, (err, data) => {
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
+            } else{
+                this.aliases = JSON.parse(data.toString());
             }
-            this.aliases = JSON.parse(data);
         }); 
     }
         
