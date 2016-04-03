@@ -1,4 +1,3 @@
-import {SlackToken} from "../config/config";
 import fs = require('fs');
 
 //Could be in config
@@ -6,33 +5,48 @@ var filePath = 'aliases';
 
 export class Alias{
     aliases;
-    file;
 
     public addAlias(param, res){
-        this.loadAliases(res);
+        try{
+            this.loadAliases(res);
+        }catch(err){
+            this.ephemeralResponse(res, 'Error', 'Was unable to load aliases with error :' + err);
+            return;
+        }
         //Get alias name and the rest
         if(this.aliasExists(param['aliasName'])){
             this.ephemeralResponse(res, 'Error', 'Alias already in use with ' + this.aliases[param['aliasName']]);
+        }else{
+            //Put alias in file and save
+            this.aliases[param['aliasName']] = {
+                zip: param['zip'],
+                country: param['country'],
+                forecast: param['forecast']
+            };
+            
+            try{
+                this.saveAliases(res);
+                //Send confirmation message
+                this.ephemeralResponse(res, 'Success', 'Alias ' + param['aliasName'] + ' saved with ' + param['zip'] + ' ' + param['country'] + ' ' + param['forecast']);
+            }catch(err){
+                this.ephemeralResponse(res, 'Error', 'Was unable to save aliases with error :' + err);
+                return;
+            }
         }
 
-        //Put alias in file and save
-        this.aliases[param['aliasName']] = {
-            zip: param['zip'],
-            country: param['country'],
-            forecast: param['forecast']
-        };
-        this.saveAliases(res);
-
-        //Send confirmation message
-        this.ephemeralResponse(res, 'Success', 'Alias ' + param['aliasName'] + ' saved with ' + param['zip'] + ' ' + param['country'] + ' ' + param['forecast']);
     }
     
     public deleteAlias(param, res){
         this.loadAliases(res);
         if(this.aliasExists(param['aliasName'])){
             delete this.aliases[param['aliasName']];
-            this.saveAliases(res);
-            this.ephemeralResponse(res, 'Success', 'Alias ' + param['aliasName'] + ' deleted');
+            try{
+                this.saveAliases(res);
+                this.ephemeralResponse(res, 'Success', 'Alias ' + param['aliasName'] + ' deleted');
+            }catch(err){
+                this.ephemeralResponse(res, 'Error', 'Was unable to save aliases with error :' + err);
+                return;
+            }
         } else{
             this.ephemeralResponse(res, 'Error', 'Alias ' + param['aliasName'] + ' does not exists');
         }
@@ -43,35 +57,25 @@ export class Alias{
     }
     
     private loadAliases(res){
-        fs.open(filePath, 'w+', (err, fd) => {
-            if(err){
-                this.ephemeralResponse(res, 'Error', 'Was unable to open file');
-            }
-            fs.close(fd, (err) => { 
-                this.ephemeralResponse(res, 'Error', 'Was unable to close file');
-            });
-        });
-        
-        fs.readFile(filePath, (err, data) => {
-            if(err){
-                this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
-            } else{
-                let stringifiefBuffer = data.toString();
-                if(stringifiefBuffer === ''){
-                    this.aliases = {};
-                }else{
-                    this.aliases = JSON.parse(stringifiefBuffer);
-                }
-            }
-        }); 
+        try{
+            fs.accessSync(filePath, fs.F_OK);
+        }catch(err){
+            let fd = fs.openSync(filePath, 'w+');
+            fs.closeSync(fd);
+        }
+
+        let data = fs.readFileSync(filePath, 'utf8');
+        let stringifiedBuffer = data.toString();
+
+        if(stringifiedBuffer === '' || 'undefined'){
+            this.aliases = {};
+        }else{
+            this.aliases = JSON.parse(stringifiedBuffer);
+        }
     }
         
     private saveAliases(res){
-        fs.writeFile(this.file, JSON.stringify(this.aliases), (err) =>{
-            if(err) {
-                this.ephemeralResponse(res, 'Error', 'Was unable to save alias file');
-            }
-        });
+        fs.writeFileSync(filePath, JSON.stringify(this.aliases));
     }
     
     private aliasExists(aliasName){

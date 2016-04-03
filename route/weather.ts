@@ -6,6 +6,7 @@ let weather = new Weather();
 let alias = new Alias();
 
 export function getWeather(req, res) {
+    console.log("In get weather");
     if (req.body.token === SlackToken) {
         if (req.body.text) {
             let queryText = req.body.text.split(/\s+/g);
