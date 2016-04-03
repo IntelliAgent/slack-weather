@@ -60,6 +60,7 @@ export class Alias{
         try{
             fs.accessSync(filePath, fs.F_OK);
         }catch(err){
+            fs.mkdirSync('tmp');
             fs.writeFileSync(filePath, '');
         }
 
