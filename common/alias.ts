@@ -43,11 +43,11 @@ export class Alias{
     }
     
     private loadAliases(res){
-        this.file = fs.open(filePath, 'w+', (err) => {
+        this.file = fs.open(filePath, 'w+', (err, fd) => {
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to open file');
             }
-            this.file.readFile(this.file, (data, err) => {
+            fs.readFile(this.file, (data, err) => {
                 if(err){
                     this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
                 }    
