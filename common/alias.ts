@@ -47,14 +47,14 @@ export class Alias{
             if(err){
                 this.ephemeralResponse(res, 'Error', 'Was unable to open file');
             }
-            fs.readFile(this.file, (data, err) => {
-                if(err){
-                    this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
-                }    
-                this.aliases = JSON.parse(data);
-            }); 
-
         });
+        
+        fs.readFile(this.file, (data, err) => {
+            if(err){
+                this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
+            }    
+            this.aliases = JSON.parse(data);
+        }); 
     }
         
     private saveAliases(res){
