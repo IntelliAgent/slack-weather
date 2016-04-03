@@ -1,14 +1,14 @@
 import fs = require('fs');
 
 //Could be in config
-var filePath = 'aliases';
+var filePath = './tmp/aliases';
 
 export class Alias{
     aliases;
 
     public addAlias(param, res){
         try{
-            this.loadAliases(res);
+            this.loadAliases();
         }catch(err){
             this.ephemeralResponse(res, 'Error', 'Was unable to load aliases with error :' + err);
             return;
@@ -37,7 +37,7 @@ export class Alias{
     }
     
     public deleteAlias(param, res){
-        this.loadAliases(res);
+        this.loadAliases();
         if(this.aliasExists(param['aliasName'])){
             delete this.aliases[param['aliasName']];
             try{
@@ -56,21 +56,19 @@ export class Alias{
         //TODO
     }
     
-    private loadAliases(res){
+    private loadAliases(){
         try{
             fs.accessSync(filePath, fs.F_OK);
         }catch(err){
-            let fd = fs.openSync(filePath, 'w+');
-            fs.closeSync(fd);
+            fs.writeFileSync(filePath, '');
         }
 
         let data = fs.readFileSync(filePath, 'utf8');
-        let stringifiedBuffer = data.toString();
-
-        if(stringifiedBuffer === '' || 'undefined'){
+        
+        if(data === '' || 'undefined'){
             this.aliases = {};
         }else{
-            this.aliases = JSON.parse(stringifiedBuffer);
+            this.aliases = JSON.parse(data);
         }
     }
         
