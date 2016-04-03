@@ -85,7 +85,7 @@ export class Alias{
     private ephemeralResponse(res, m_pretext, m_text){
         res.status(200).send({
             response_type: 'ephemeral',
-            attachment: [{  
+            attachments: [{  
                 pretext: m_pretext,
                 text: m_text
             }]
