@@ -43,13 +43,17 @@ export class Alias{
     }
     
     private loadAliases(res){
-        this.file = fs.open(filePath, 'w+');
-        
-        this.file.readFile(this.file, (data, err) => {
+        this.file = fs.open(filePath, 'w+', (err) => {
             if(err){
-                this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
-            }    
-            this.aliases = JSON.parse(data);
+                this.ephemeralResponse(res, 'Error', 'Was unable to open file');
+            }
+            this.file.readFile(this.file, (data, err) => {
+                if(err){
+                    this.ephemeralResponse(res, 'Error', 'Was unable to load alias file');
+                }    
+                this.aliases = JSON.parse(data);
+            }); 
+
         });
     }
         
